@@ -1,0 +1,40 @@
+download from http://code.activestate.com/komodo/remotedebugging/ the PHP Remote Debugging Client
+for the specific platform and php server version.
+
+in my case they were Komodo-PHPRemoteDebugging-8.5.4-86985-linux-x86.tar.gz
+for php 5.6 and Komodo-PHPRemoteDebugging-11.0.2-90813-linux-x86.tar.gz
+for php 7.0.
+
+extract the xdebug.so file and copy it on /opt/lampp/lib/php/extensions/
+
+modify the php.ini file located in (/opt/lampp/etc/php.ini) 
+the "Dynamic Extension" section by adding:
+
+; xdebug config for Linux and Mac OS X
+zend_extension="/path/to/xdebug.so"
+xdebug.remote_enable=1
+xdebug.remote_handler=dbgp
+xdebug.remote_mode=req
+xdebug.remote_host=127.0.0.1 //(use your ip where komodo ide is runnig)
+xdebug.remote_port=9000
+
+for reference, the php.ini.bak is a fully functional backup
+
+
+restart lampp by issuing /opt/lampp/lampp restart
+
+ignore mapping error (you won't be able to save changes in scripts from Komodo IDE).
+
+insert export XDEBUG_CONFIG="remote_port=9000 remote_enable=1" command for debugging.
+
+insert xdebug_break(); function as in guestbook.php example
+for breakpoints.
+
+in komodo 8.5 ide, go on Preferences, Debugger , Initial break behaviour:
+Run to first breakpoint
+
+finally, get on the browser with the script about to debug
+and append ?XDEBUG_SESSION_START=1 to the end of the URL
+for example :
+http://192.168.0.103/globe_bank/php_tutorials/guestbook.php?XDEBUG_SESSION_START=1
+komodo ide will prompt for a New Remote Debugger Connection
